@@ -1,0 +1,19 @@
+{
+  "name": "t3c-cargo-organiser",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@parcel/transformer-typescript-tsc": "^2.16.4",
+    "parcel": "^2.16.4",
+    "typescript": "^5.9.3"
+  }
+}
