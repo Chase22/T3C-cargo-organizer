@@ -4,9 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>T3C Cargo Organiser</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <h1>T3C Cargo Organiser</h1>
+    <div class="layout">
+      <div class="column left-column">
+        <h2>Input</h2>
+        <textarea id="input-field" placeholder="Paste your cargo list here..."></textarea>
+        <div class="button-group">
+          <button id="distribute-button">Distribute Cargo</button>
+          <button id="load-test-data-button">Load Test Data</button>
+        </div>
+      </div>
+      <div class="column right-column">
+        <div class="output-header">
+          <h2>Distribution Result</h2>
+          <button id="copy-button">Copy</button>
+        </div>
+        <textarea id="output-textarea" readonly></textarea>
+      </div>
+    </div>
+  </div>
   <script type="module" src="./index.ts"></script>
 </body>
 </html>
