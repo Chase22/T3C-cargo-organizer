@@ -5,3 +5,6 @@ dist/
 .DS_Store
 *.log
 
+# Intellij
+t3c-cargo-organiser.iml
+.idea
