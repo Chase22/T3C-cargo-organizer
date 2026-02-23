@@ -1,76 +1,63 @@
+
+> [!WARNING]
+> This repository was heavily **AI-generated** as an experiment and currently in the process of being cleaned up.
+
 # T3C Cargo Organiser
 
-A JavaScript browser project with TypeScript support using the Parcel bundler.
+A web application for automatically distributing lend-lease Orders into containers. Primarily for use with T-3C
 
-## Project Setup
+## How to Use
 
-This project is configured with:
-- **TypeScript** for type-safe JavaScript development
-- **Parcel** for fast bundling and module resolution
-- **Modern ES2020** target for browser compatibility
+### 1. Copy the item list from the lend-lease order
+![](img/copy.png)
 
-## Available Scripts
-
-### Development
-```bash
-npm run dev
+### 2. Paste the Copied text into the left input field.
+The result should look something like this
 ```
-Starts the development server with hot module replacement (HMR). The app will be served at `http://localhost:1234`.
-
-### Production Build
-```bash
-npm run build
-```
-Creates an optimized production build in the `dist/` directory.
-
-## Project Structure
-
-```
-src/
-├── index.html    # HTML entry point
-├── index.ts      # TypeScript entry point
-└── main.ts       # Main application logic
-```
-
-## Configuration Files
-
-- **tsconfig.json** - TypeScript compiler configuration
-- **.parcelrc** - Parcel bundler configuration
-- **package.json** - Project dependencies and scripts
-- **.gitignore** - Git ignore rules
-
-## Getting Started
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-3. Open your browser and navigate to `http://localhost:1234`
-
-## Building for Production
-
-To create a production build:
-```bash
-npm run build
+0/120 crates :LightArtilleryAmmo: 120mm
+0/50 crates :RifleAmmo: 7.62mm
+0/40 crates :SMGAmmo: 9mm
+0/40 crates :ATRPGAmmo: ATRPG
+0/25 crates :Bandages: Bandage
+0/20 crates :GrenadeC: Bomastone
+0/20 crates :GasMaskFilter: Filter
+0/20 crates :FlameBackpackC: Flame Backpack
+0/30 crates :RifleLightC: Fuscina
+0/40 crates :GreenAsh: Gas
+0/30 crates :SMGHeavyC: Lionclaw
+0/20 crates :GrenadeLauncherC: Lunaire
+0/10 crates :GasMask: Mask
+0/5 crates :MedicUniformC: Medic
+0/5 crates :FirstAidKit: Medkit
+0/10 crates :FlameTorchC: Molten Wind
+0/20 crates :BloodPlasma: Plasma
+0/20 crates :Radio: Radio
+0/10 crates :ScoutUniformC: Recon Camo
+0/100 crates :SoldierSupplies: Shirts
+0/20 crates :StickyBomb: Sticky
+0/5 crates :TraumaKit: Trauma Kit
+0/40 crates :HELaunchedGrenade: Tremola
+0/20 crates :ATRPGC: Venom
 ```
 
-The optimized output will be in the `dist/` directory.
+### 3. Click on "Distribute Items" or press CTRL+Enter
+The right panel displays the distribution result.
 
-## Adding Dependencies
+### 4. Copy Results
+Click the "Copy" button to copy the distribution results into your clipboard, ready to be pasted into discord
 
-To add a new package:
-```bash
-npm install package-name
-```
+## Distribution Algorithm
 
-For development-only packages:
-```bash
-npm install --save-dev package-name
-```
+The distribution is relatively simple:
 
+1. Items that can entirely fill up a container are added first
+2. Any partial containers are filled to contain as few items as possible
+3. Other Items are distributed
+
+If an order requires more than 12 containers (720 crates) an error is returned
+
+## Planned Features
+1. Easier copying (by just using copy-text in discord)
+2. Different amounts of containers (Allowing for flatbed convoys)
+3. Sorting items by category, to allow for containers to ideally be only items of a single category
+4. Maybe allowing to directly access LL orders via API (heavily dependent on availability)
