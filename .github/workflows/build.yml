@@ -36,7 +36,7 @@ jobs:
       - name: Verify
         run: yarn test
       - name: Build
-        run: yarn build
+        run: yarn build:prod
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
