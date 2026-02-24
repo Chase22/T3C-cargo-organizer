@@ -21,12 +21,6 @@ describe('Cargo Organization', () => {
       expect(containers.every(c => c.items.length === 0)).toBe(true);
       expect(containers.every(c => c.totalCrates === 0)).toBe(true);
     });
-
-    it('should have containers with correct IDs from 1 to 12', () => {
-      containers.forEach((container, index) => {
-        expect(container.id).toBe(index + 1);
-      });
-    });
   });
 
   describe('parseInput', () => {

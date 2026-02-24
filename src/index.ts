@@ -157,26 +157,21 @@ class UIManager {
   private renderOutput(containers: Container[]): void {
     const lines: string[] = [];
 
-    // Sort containers by number of items (ascending - fewer items first), then by container ID
-    const sortedContainers = [...containers]
-      .filter(c => c.items.length > 0)
-      .sort((a, b) => {
-        // Primary sort: by number of items (fewer first)
-        if (a.items.length !== b.items.length) {
-          return a.items.length - b.items.length;
-        }
-        // Secondary sort: by container ID (in order)
-        return a.id - b.id;
-      });
+    // Filter and sort containers by number of items (ascending - fewer items first)
+    const sortedContainers = containers
+      .filter(container => container.items.length > 0)
+      .sort((a, b) => a.items.length - b.items.length);
 
-    sortedContainers.forEach(container => {
+    sortedContainers.forEach((container, index) => {
+      const containerId = index + 1; // Sequential numbering after sorting
+
       if (container.items.length === 1) {
         // Single item format: Container {number}: {quantity} crates {item}
         const item = container.items[0];
-        lines.push(`Container ${container.id}: ${item.quantity} crates ${item.name}`);
+        lines.push(`Container ${containerId}: ${item.quantity} crates ${item.name}`);
       } else {
         // Multiple items format
-        lines.push(`┌ Container ${container.id}`);
+        lines.push(`┌ Container ${containerId}`);
         container.items.forEach(item => {
           lines.push(`│ ${item.quantity} crates ${item.name}`);
         });

@@ -4,7 +4,6 @@ export interface Item {
 }
 
 export interface Container {
-  id: number;
   items: Item[];
   totalCrates: number;
 }
@@ -24,8 +23,7 @@ export function parseInput(input: string): Item[] {
 }
 
 export function initializeContainers(): Container[] {
-  return Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
+  return Array.from({ length: 12 }, () => ({
     items: [],
     totalCrates: 0,
   }));
