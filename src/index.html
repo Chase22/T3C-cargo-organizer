@@ -8,7 +8,10 @@
 </head>
 <body>
   <div id="app">
-    <h1>T3C Cargo Organiser</h1>
+    <div class="header">
+      <h1>T3C Cargo Organiser</h1>
+      <button id="help-button" class="help-button" title="Show help">?</button>
+    </div>
     <div class="layout">
       <div class="column left-column">
         <h2>Input</h2>
@@ -27,6 +30,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Help Modal -->
+  <div id="help-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <button id="close-help-button" class="close-button">&times;</button>
+      <div id="help-content"></div>
+    </div>
+  </div>
+
   <script type="module" src="./index.ts"></script>
 </body>
 </html>

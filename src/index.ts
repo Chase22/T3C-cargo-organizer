@@ -28,17 +28,26 @@ class UIManager {
   private readonly distributeButton: HTMLButtonElement;
   private readonly outputTextarea: HTMLTextAreaElement;
   private readonly copyButton: HTMLButtonElement;
+  private readonly helpButton: HTMLButtonElement;
+  private readonly helpModal: HTMLElement;
+  private readonly closeHelpButton: HTMLButtonElement;
+  private readonly helpContent: HTMLElement;
 
   constructor() {
     this.inputField = document.getElementById('input-field') as HTMLTextAreaElement;
     this.distributeButton = document.getElementById('distribute-button') as HTMLButtonElement;
     this.outputTextarea = document.getElementById('output-textarea') as HTMLTextAreaElement;
     this.copyButton = document.getElementById('copy-button') as HTMLButtonElement;
+    this.helpButton = document.getElementById('help-button') as HTMLButtonElement;
+    this.helpModal = document.getElementById('help-modal') as HTMLElement;
+    this.closeHelpButton = document.getElementById('close-help-button') as HTMLButtonElement;
+    this.helpContent = document.getElementById('help-content') as HTMLElement;
 
     this.setupEventListeners();
   }
 
   private setupEventListeners(): void {
+    // Main action listeners
     this.distributeButton.addEventListener('click', () => this.handleDistribute());
     this.inputField.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -50,11 +59,39 @@ class UIManager {
     loadTestDataButton.addEventListener('click', () => this.handleLoadTestData());
 
     this.copyButton.addEventListener('click', () => this.handleCopy());
+
+    // Help button listeners
+    this.helpButton.addEventListener('click', () => this.showHelpModal());
+    this.closeHelpButton.addEventListener('click', () => this.hideHelpModal());
+    this.helpModal.addEventListener('click', (e) => {
+      // Close when clicking outside the modal content
+      if (e.target === this.helpModal) {
+        this.hideHelpModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.helpModal.style.display !== 'none') {
+        this.hideHelpModal();
+      }
+    });
   }
+
 
   private handleLoadTestData(): void {
     this.inputField.value = TEST_DATA;
     this.handleDistribute();
+  }
+
+  private showHelpModal(): void {
+    this.helpModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  private hideHelpModal(): void {
+    this.helpModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
   }
 
   private handleCopy(): void {
