@@ -11,15 +11,40 @@ export interface Container {
 export const MAX_CRATES_PER_CONTAINER = 60;
 
 export function parseInput(input: string): Item[] {
-  // Format: _/Quantity crates :_: Name
+  // Supports multiple formats:
+  // Format 1: _/Quantity crates :_: Name
+  // Format 2: `_`/`Quantity` crates <:Icon:ID> *Name*
+  // Format 3: 1. `_`/`Quantity` crates <:Icon:ID> *Name* (with Discord list numbering)
+  // Non-matching lines are silently ignored
   const lines = input.split('\n').filter(line => line.trim());
-  return lines.map((line, index) => {
-    const match = line.match(/^\d+\/(\d+)\s+crates\s+:[^:]*:\s*(.+)$/);
-    if (!match) {
-      throw new Error(`Invalid line format at line ${index + 1}: "${line}"`);
+  const items: Item[] = [];
+
+  for (const line of lines) {
+    // Remove leading list numbering (e.g., "1. ", "2. ", etc.)
+    const cleanedLine = line.replace(/^\d+\.\s+/, '');
+
+    // Try Discord format first: `_`/`Quantity` crates <:Icon:ID> *Name*
+    let match = cleanedLine.match(/`\d+`\/`(\d+)`\s+crates\s+<:[^:]*:\d+>\s+\*(.+?)\*/);
+    if (match) {
+      items.push({ name: match[2].trim(), quantity: parseInt(match[1], 10) });
+      continue;
     }
-    return { name: match[2].trim(), quantity: parseInt(match[1], 10) };
-  });
+
+    // Try simple format: _/Quantity crates :_: Name
+    match = cleanedLine.match(/^\d+\/(\d+)\s+crates\s+:[^:]*:\s*(.+)$/);
+    if (match) {
+      items.push({ name: match[2].trim(), quantity: parseInt(match[1], 10) });
+      continue;
+    }
+
+    // Line doesn't match any format - silently ignore it
+  }
+
+  if (items.length === 0) {
+    throw new Error('No valid items found in input');
+  }
+
+  return items;
 }
 
 export function initializeContainers(): Container[] {

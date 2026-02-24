@@ -54,12 +54,24 @@ describe('Cargo Organization', () => {
       expect(items).toHaveLength(2);
     });
 
-    it('should fail when input contains invalid lines', () => {
+    it('should ignore non-matching lines and parse valid items', () => {
       const input = `0/60 crates :RifleAmmo: 7.62mm
-invalid line
-0/30 crates :Bandages: Bandage`;
+This is not a valid item line
+0/30 crates :Bandages: Bandage
+Some other text here`;
 
-      expect(() => parseInput(input)).toThrow();
+      const items = parseInput(input);
+      expect(items).toHaveLength(2);
+      expect(items[0]).toEqual({ name: '7.62mm', quantity: 60 });
+      expect(items[1]).toEqual({ name: 'Bandage', quantity: 30 });
+    });
+
+    it('should fail when input contains no valid items', () => {
+      const input = `This is just some text
+No valid items here
+Just random lines`;
+
+      expect(() => parseInput(input)).toThrow('No valid items found in input');
     });
 
     it('should trim item names', () => {
@@ -67,6 +79,40 @@ invalid line
       const items = parseInput(input);
 
       expect(items[0].name).toBe('7.62mm');
+    });
+
+    it('should parse Discord format with backticks and emoji icons', () => {
+      const input = '`0`/`75` crates <:MGAmmo:1410191741499215952> *12.7mm*';
+      const items = parseInput(input);
+
+      expect(items).toHaveLength(1);
+      expect(items[0]).toEqual({ name: '12.7mm', quantity: 75 });
+    });
+
+    it('should parse multiple Discord format items correctly', () => {
+      const input = `\`0\`/\`75\` crates <:MGAmmo:1410191741499215952> *12.7mm*
+\`0\`/\`60\` crates <:SMGAmmo:1410191812722688031> *9mm*
+\`0\`/\`30\` crates <:Bandages:1410202677802958858> *Bandage*`;
+
+      const items = parseInput(input);
+
+      expect(items).toHaveLength(3);
+      expect(items[0]).toEqual({ name: '12.7mm', quantity: 75 });
+      expect(items[1]).toEqual({ name: '9mm', quantity: 60 });
+      expect(items[2]).toEqual({ name: 'Bandage', quantity: 30 });
+    });
+
+    it('should parse Discord format with numbered list items', () => {
+      const input = `1.  \`0\`/\`75\` crates <:MGAmmo:1410191741499215952> *12.7mm*
+2.  \`0\`/\`75\` crates <:LightArtilleryAmmo:1410191733312065666> *120mm*
+3.  \`0\`/\`60\` crates <:SMGAmmo:1410191812722688031> *9mm*`;
+
+      const items = parseInput(input);
+
+      expect(items).toHaveLength(3);
+      expect(items[0]).toEqual({ name: '12.7mm', quantity: 75 });
+      expect(items[1]).toEqual({ name: '120mm', quantity: 75 });
+      expect(items[2]).toEqual({ name: '9mm', quantity: 60 });
     });
   });
 
