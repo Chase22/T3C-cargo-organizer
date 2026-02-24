@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html && node inject-help-dist.js",
+    "build:prod": "parcel build src/index.html --public-url \"https://chase22.github.io/T3C-cargo-organizer\" && node inject-help-dist.js",
     "test": "jest"
   },
   "keywords": [],
