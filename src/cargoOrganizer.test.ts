@@ -2,6 +2,7 @@ import {
   parseInput,
   initializeContainers,
   getAvailableSpace,
+  sortItemsInContainer,
   addItemToContainer,
   Item,
   Container,
@@ -206,6 +207,44 @@ Just random lines`;
 
       expect(added).toBe(60);
       expect(containers[0].totalCrates).toBe(60);
+    });
+  });
+
+  describe('sortItemsInContainer', () => {
+    it('should sort items by quantity in descending order', () => {
+      const container: Container = {
+        items: [
+          { name: 'Item1', quantity: 10 },
+          { name: 'Item2', quantity: 30 },
+          { name: 'Item3', quantity: 20 },
+        ],
+        totalCrates: 60,
+      };
+
+      sortItemsInContainer(container);
+
+      expect(container.items[0]).toEqual({ name: 'Item2', quantity: 30 });
+      expect(container.items[1]).toEqual({ name: 'Item3', quantity: 20 });
+      expect(container.items[2]).toEqual({ name: 'Item1', quantity: 10 });
+    });
+
+    it('should sort items after adding to container', () => {
+      addItemToContainer(containers[0], { name: 'Item1', quantity: 10 }, 10);
+      addItemToContainer(containers[0], { name: 'Item2', quantity: 30 }, 30);
+      addItemToContainer(containers[0], { name: 'Item3', quantity: 20 }, 20);
+
+      expect(containers[0].items[0]).toEqual({ name: 'Item2', quantity: 30 });
+      expect(containers[0].items[1]).toEqual({ name: 'Item3', quantity: 20 });
+      expect(containers[0].items[2]).toEqual({ name: 'Item1', quantity: 10 });
+    });
+
+    it('should maintain sort order when adding to existing item', () => {
+      addItemToContainer(containers[0], { name: 'Item1', quantity: 10 }, 10);
+      addItemToContainer(containers[0], { name: 'Item2', quantity: 30 }, 30);
+      addItemToContainer(containers[0], { name: 'Item1', quantity: 5 }, 5);
+
+      expect(containers[0].items[0]).toEqual({ name: 'Item2', quantity: 30 });
+      expect(containers[0].items[1]).toEqual({ name: 'Item1', quantity: 15 });
     });
   });
 

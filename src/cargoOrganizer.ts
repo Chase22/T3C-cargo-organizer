@@ -58,6 +58,9 @@ export function getAvailableSpace(container: Container): number {
   return MAX_CRATES_PER_CONTAINER - container.totalCrates;
 }
 
+export function sortItemsInContainer(container: Container): void {
+  container.items.sort((a, b) => b.quantity - a.quantity);
+}
 
 export function addItemToContainer(container: Container, item: Item, quantity: number): number {
   const availableSpace = getAvailableSpace(container);
@@ -74,6 +77,7 @@ export function addItemToContainer(container: Container, item: Item, quantity: n
       });
     }
     container.totalCrates += amountToAdd;
+    sortItemsInContainer(container);
   }
 
   return amountToAdd;
